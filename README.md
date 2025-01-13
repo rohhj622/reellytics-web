@@ -1,5 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Set ENV
+- .env: The environment
+![alt text](<Screenshot 2025-01-13 at 21.31.14.png>)
 ## Getting Started
 
 First, run the development server:
