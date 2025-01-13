@@ -1,8 +1,67 @@
+import Login from "@/components/Login";
 import Image from "next/image";
+import fetchWithToken from '@/utils/fetchWithToken';
 
-export default function Home() {
+export default async function Home() {
+
+  const token = await fetchWithToken(
+      'http://localhost:3000/api/auth/introspect',
+  );
+
+  const analyze = async () => {
+    console.log('hi')
+    const req_url = `https://api.hardihooderangelsociety.com/api/v1/reellytics/analyze`
+    
+    const payload = {
+      followers: 0,
+      time: 0,
+      video_length: 0,
+      avg_watch_time: 0,
+      views: 0,
+      likes: 0,
+      comments: 0,
+      shares: 0,
+      saves: 0,
+      follows: 0
+    };
+
+    // Fetch options
+    const options = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    const res = await fetch(req_url, options);
+    const data = await res.json();
+    return data;
+  }
+  const datatest = await analyze();
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <Login />
+      <div>
+        <h1>Decode Token</h1>
+        {
+          token === undefined?
+          <p>Loading...</p>
+          :
+          <pre>{JSON.stringify(token, null, 2)}</pre>
+        }
+      </div>
+      <div>
+        <h1>Reellytics</h1>
+        {
+          datatest === undefined?
+          <p>Loading...</p>
+          :
+          <pre>{JSON.stringify(datatest, null, 2)}</pre>
+        }
+      </div>
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -99,3 +158,4 @@ export default function Home() {
     </div>
   );
 }
+
