@@ -9,7 +9,10 @@ async function fetchWithToken(url: string, init?: { headers?: {} }) {
         const session = (await getServerSession(
             authOptions,
         )) as NextAuthSession | null;
-    
+        
+        if (session === null) {
+            return null;
+        }
         const commonHeaders = {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session?.accessToken}`,
